@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipeDetailActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                android:id="@+id/imageIv"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                app:c_border="true"
+                app:c_border_width="1dp"
+                app:c_border_color="@color/gray"
+                android:src="@drawable/ic_food"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="2">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:layout_gravity="top"
+                        android:text="Recipe Details"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Recipe Title"/>
+
+                    <TextView
+                        android:id="@+id/titleTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Recipe Title"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Recipe Type"/>
+
+                    <TextView
+                        android:id="@+id/typeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Recipe Type"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Date Added"/>
+
+                    <TextView
+                        android:id="@+id/addedTimeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Date Added"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Date Updated"/>
+
+                    <TextView
+                        android:id="@+id/updatedTimeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="top"
+                        android:text="Date Updated"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:layout_gravity="top"
+                        android:text="Recipe Ingredients"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/ingredientTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_span="3"
+                        android:layout_gravity="top"
+                        android:text="Recipe Ingredient"/>
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:layout_gravity="top"
+                        android:text="Recipe Step"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/stepTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_span="3"
+                        android:layout_gravity="top"
+                        android:text="Recipe Step" />
+
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deletebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_delete"/>
+
+</RelativeLayout>

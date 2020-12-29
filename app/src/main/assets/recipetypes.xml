@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<recipetypes>
+    <recipetype>
+        <type>Select All</type>
+    </recipetype>
+    <recipetype>
+        <type>Western</type>
+    </recipetype>
+    <recipetype>
+        <type>Malay</type>
+    </recipetype>
+    <recipetype>
+        <type>Chinese</type>
+    </recipetype>
+    <recipetype>
+        <type>Indian</type>
+    </recipetype>
+</recipetypes>

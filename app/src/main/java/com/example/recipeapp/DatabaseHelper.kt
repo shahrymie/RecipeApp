@@ -2,16 +2,20 @@ package com.example.recipeapp
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.SyncStateContract
+import java.io.File
+import java.io.FileOutputStream
 
-class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
+class DatabaseHelper(val context: Context?) : SQLiteOpenHelper(
     context,
     Constants.DB_NAME,
     null,
     Constants.DB_VERSION
 ) {
+
     override fun onCreate(db: SQLiteDatabase?) {
         if (db != null) {
             db.execSQL(Constants.CREATE_TABLE)
@@ -20,8 +24,9 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         if (db != null) {
-            db.execSQL("DROP TABLE IF EXISTS " + Constants.TABLE_NAME)
+            db.execSQL("DROP TABLE IF EXISTS " + Constants.DB_NAME)
         }
+        onCreate(db)
     }
 
     fun insertRecord(
@@ -33,7 +38,6 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
         addedTime: String?,
         updatedTime: String?
     ): Long {
-        val db = this.writableDatabase
         val values = ContentValues()
         values.put(Constants.C_TITLE, title)
         values.put(Constants.C_IMAGE, image)
@@ -42,7 +46,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
         values.put(Constants.C_STEP, step)
         values.put(Constants.C_ADDED_TIMESTAMP, addedTime)
         values.put(Constants.C_UPDATED_TIMESTAMP, updatedTime)
-
+        val db = this.writableDatabase
         val id = db.insert(Constants.TABLE_NAME, null, values)
         db.close()
 
@@ -60,9 +64,8 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
         updatedTime: String?
     ):Long
     {
-        val db = this.writableDatabase
         val values = ContentValues()
-
+        val db = this.writableDatabase
         values.put(Constants.C_TITLE, title)
         values.put(Constants.C_IMAGE, image)
         values.put(Constants.C_TYPE, type)
@@ -137,13 +140,13 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(
     }
 
     fun deleteRecord(id: String){
-        val db = writableDatabase
+        val db = this.writableDatabase
         db.delete(Constants.TABLE_NAME,"${Constants.C_ID}=?", arrayOf(id))
         db.close()
     }
 
     fun deleteAllRecords(){
-        val db = writableDatabase
+        val db = this.writableDatabase
         db.execSQL("DELETE FROM ${Constants.TABLE_NAME}")
         db.close()
     }

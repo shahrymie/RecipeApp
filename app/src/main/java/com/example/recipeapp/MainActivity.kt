@@ -1,16 +1,17 @@
 package com.example.recipeapp
 
-import android.R
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.example.recipeapp.databinding.ActivityMainBinding
+import java.io.FileOutputStream
 import java.io.IOException
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         setSpinner()
 
         binding.addRecordBtn.setOnClickListener{
-            val intent = Intent(this,AddRecipeActivity::class.java)
-            intent.putExtra("isEditMode",false)
+            val intent = Intent(this, AddRecipeActivity::class.java)
+            intent.putExtra("isEditMode", false)
             startActivity(intent)
         }
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadRecords() {
 
-        val adapterRecord = RecipeAdapter(this,dbHelper.getAllRecords(NEWEST_FIRST))
+        val adapterRecord = RecipeAdapter(this, dbHelper.getAllRecords(NEWEST_FIRST))
 
         binding.recordRv.adapter = adapterRecord
 
@@ -53,7 +54,11 @@ class MainActivity : AppCompatActivity() {
             val parser = XmlPullParser()
             val istream = assets.open("recipetypes.xml")
             recipetypes = parser.parse(istream)
-            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, recipetypes!!)
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                recipetypes!!
+            )
             binding.filterSpinner.adapter = adapter
 
             binding.filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -63,8 +68,12 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "${recipetypes[position]}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     dbHelper.filterRecords(recipetypes[position].toString())
-                    onResume()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -75,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         }catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     public override fun onResume() {

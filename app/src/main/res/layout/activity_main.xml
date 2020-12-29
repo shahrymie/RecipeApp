@@ -37,8 +37,6 @@
             android:layout_margin="10dp"
             android:src="@drawable/ic_add" />
 
-
-
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

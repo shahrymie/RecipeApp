@@ -56,6 +56,8 @@ class AddRecipeActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setSpinner()
+
         actionBar = supportActionBar
         actionBar!!.title = "Add Record"
 
@@ -88,8 +90,6 @@ class AddRecipeActivity : AppCompatActivity() {
         }else{
             actionBar!!.title =  "Add Record"
         }
-
-        setSpinner()
 
         dbHelper = DatabaseHelper(this)
 
@@ -169,7 +169,6 @@ class AddRecipeActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    parent!!.getItemAtPosition(position)
                     binding.typeTv.text = recipetypes[position].toString()
                 }
 

@@ -3,13 +3,14 @@ package com.example.recipeapp
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import androidx.appcompat.app.ActionBar
-import com.example.recipeapp.databinding.ActivityRecipeDetailBinding
+import com.example.recipeapp.databinding.ActivityRecipeDetailsBinding
 import java.util.*
 
 class RecipeDetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRecipeDetailBinding
+    private lateinit var binding: ActivityRecipeDetailsBinding
 
     private var actionBar: ActionBar? = null
 
@@ -20,7 +21,7 @@ class RecipeDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
+        binding = ActivityRecipeDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         actionBar = supportActionBar
@@ -71,7 +72,9 @@ class RecipeDetailActivity : AppCompatActivity() {
 
                 binding.titleTv.text = title
                 binding.typeTv.text = type
+                binding.ingredientTv.movementMethod = ScrollingMovementMethod.getInstance()
                 binding.ingredientTv.text = ingredient
+                binding.stepTv.movementMethod = ScrollingMovementMethod.getInstance()
                 binding.stepTv.text = step
                 binding.addedTimeTv.text = timeAdded
                 binding.updatedTimeTv.text = timeUpdated

@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.SyncStateContract
+import com.example.recipeapp.Constants.DB_NAME
+import com.example.recipeapp.Constants.DB_VERSION
 import java.io.File
 import java.io.FileOutputStream
 
@@ -16,17 +18,62 @@ class DatabaseHelper(val context: Context?) : SQLiteOpenHelper(
     Constants.DB_VERSION
 ) {
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        if (db != null) {
-            db.execSQL(Constants.CREATE_TABLE)
+    private val preferences: SharedPreferences = context!!.getSharedPreferences(
+        "${context.packageName}.database_versions",
+        Context.MODE_PRIVATE
+    )
+
+    private fun installedDatabaseIsOutdated(): Boolean {
+        return preferences.getInt(DB_NAME, 0) < DB_VERSION
+    }
+
+    private fun writeDatabaseVersionInPreferences() {
+        preferences.edit().apply {
+            putInt(DB_NAME, DB_VERSION)
+            apply()
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (db != null) {
-            db.execSQL("DROP TABLE IF EXISTS " + Constants.DB_NAME)
+    private fun installDatabaseFromAssets() {
+        val inputStream = context!!.assets.open("$DB_NAME.db")
+
+        try {
+            val outputFile = File(context!!.getDatabasePath(DB_NAME).path)
+            val outputStream = FileOutputStream(outputFile)
+
+            inputStream.copyTo(outputStream)
+            inputStream.close()
+
+            outputStream.flush()
+            outputStream.close()
+        } catch (exception: Throwable) {
+            throw RuntimeException("The $DB_NAME database couldn't be installed.", exception)
         }
-        onCreate(db)
+    }
+
+    @Synchronized
+    private fun installOrUpdateIfNecessary() {
+        if (installedDatabaseIsOutdated()) {
+            context!!.deleteDatabase(DB_NAME)
+            installDatabaseFromAssets()
+            writeDatabaseVersionInPreferences()
+        }
+    }
+
+    override fun getWritableDatabase(): SQLiteDatabase {
+        installOrUpdateIfNecessary()
+        return super.getWritableDatabase()
+    }
+
+    override fun getReadableDatabase(): SQLiteDatabase {
+        installOrUpdateIfNecessary()
+        return super.getReadableDatabase()
+    }
+
+    override fun onCreate(db: SQLiteDatabase?) {
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 
     fun insertRecord(

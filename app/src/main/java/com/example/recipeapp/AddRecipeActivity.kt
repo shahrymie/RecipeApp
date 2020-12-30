@@ -9,6 +9,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +22,7 @@ import com.example.recipeapp.databinding.ActivityAddRecipeBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.IOException
 
 class AddRecipeActivity : AppCompatActivity() {
 
@@ -77,13 +81,15 @@ class AddRecipeActivity : AppCompatActivity() {
                 binding.ImageIv.setImageURI(imageUri)
             }
             binding.titleEt.setText(title)
-            binding.typeEt.setText(type)
+            binding.typeTv.setText(type)
             binding.ingredientEt.setText(ingredient)
             binding.stepEt.setText(step)
 
         }else{
             actionBar!!.title =  "Add Record"
         }
+
+        setSpinner()
 
         dbHelper = DatabaseHelper(this)
 
@@ -104,7 +110,7 @@ class AddRecipeActivity : AppCompatActivity() {
 
     private fun inputData() {
         title = "" + binding.titleEt.text.toString().trim()
-        type = "" + binding.typeEt.text.toString().trim()
+        type = "" + binding.typeTv.text.toString().trim()
         ingredient = "" + binding.ingredientEt.text.toString().trim()
         step = "" + binding.stepEt.text.toString().trim()
 
@@ -138,6 +144,43 @@ class AddRecipeActivity : AppCompatActivity() {
             Toast.makeText(this,"Record Added against ID $id", Toast.LENGTH_SHORT).show()
         }
         finish()
+    }
+
+    private fun setSpinner() {
+        lateinit var recipetypes: List<RecipeTypeModel>
+        try {
+            val parser = XmlPullParser()
+            val istream = assets.open("recipetypes.xml")
+            recipetypes = parser.parse(istream)
+
+            recipetypes = recipetypes.drop(1)
+
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                recipetypes!!
+            )
+            binding.typeSpinner.adapter = adapter
+
+            binding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    parent!!.getItemAtPosition(position)
+                    binding.typeTv.text = recipetypes[position].toString()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                        binding.typeTv.text = "Category"
+                }
+
+            }
+        }catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     private fun imagePickDialog() {

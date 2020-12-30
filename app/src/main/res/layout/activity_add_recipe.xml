@@ -32,8 +32,8 @@
         android:inputType="text|textCapWords"
         android:padding="10dp"/>
 
-    <EditText
-        android:id="@+id/typeEt"
+    <TextView
+        android:id="@+id/typeTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleEt"
@@ -43,16 +43,24 @@
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:background="@drawable/edit_text_border"
-        android:hint="Food Type"
-        android:inputType="text|textCapWords"
+        android:hint="Category"
+        android:textSize="18dp"
         android:padding="10dp"/>
+
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="match_parent"
+        android:layout_below="@id/titleEt"
+        android:layout_height="50dp"
+        android:paddingTop="80dp"
+        />
 
     <EditText
         android:id="@+id/ingredientEt"
         android:minHeight="120dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/typeEt"
+        android:layout_below="@+id/typeTv"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"

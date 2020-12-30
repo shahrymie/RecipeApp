@@ -37,6 +37,7 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         binding.deletebtn.setOnClickListener{
             dbHelper!!.deleteRecord(id)
+
             finish()
         }
     }

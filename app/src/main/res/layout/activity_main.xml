@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/spinnerTv"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:text="Category:"
+            android:textSize="20dp"
+            android:background="@drawable/edit_text_border"
+            android:gravity="center_vertical"
+            />
+
         <Spinner
             android:id="@+id/filterSpinner"
             android:layout_width="match_parent"

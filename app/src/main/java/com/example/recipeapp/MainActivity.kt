@@ -3,12 +3,14 @@ package com.example.recipeapp
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipeapp.databinding.ActivityMainBinding
+import org.w3c.dom.Text
 import java.io.FileOutputStream
 import java.io.IOException
 
@@ -49,11 +51,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSpinner() {
-        var recipetypes: List<RecipeTypeModel>
+        lateinit var recipetypes: List<RecipeTypeModel>
         try {
             val parser = XmlPullParser()
             val istream = assets.open("recipetypes.xml")
             recipetypes = parser.parse(istream)
+
             val adapter = ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -68,12 +71,15 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "${recipetypes[position]}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dbHelper.filterRecords(recipetypes[position].toString())
+                    parent!!.getItemAtPosition(position)
+                    if(position == 0){
+                        binding.spinnerTv.text = recipetypes[position].toString()
+                        loadRecords()
+                    }else{
+                        val adapterRecord = RecipeAdapter(this@MainActivity,dbHelper.filterRecords(recipetypes[position].toString()))
+                        binding.recordRv.adapter = adapterRecord
+                        binding.spinnerTv.text = recipetypes[position].toString()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -89,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         loadRecords()
+        setSpinner()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
